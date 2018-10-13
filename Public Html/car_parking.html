@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Car Parking with Firebase</title>
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+	<div class="container">
+
+		<div class="jumbotron text-center">
+  <h1>Car Parking System Display</h1>
+  <p>Screen is showing the state of the cars in the gradge right now. And it's showing real time so that people can know instantly what is going on.</p> 
+  <p>Presented by Galib.</p> 
+</div>
+  
+<div class="container">
+  <div class="row">
+    <div class="col-sm-3 text-center">
+      <h3>CAR SLOT - 1</h3>
+      <i class="fas fa-car-alt fa-5x"></i>
+      <div id="i1" class="space"></div>
+      <h4 id="1">Connecting</h4>
+    </div>
+    <div class="col-sm-3 text-center">
+      <h3>CAR SLOT - 2</h3>
+      <i class="fas fa-car-alt fa-5x"></i>
+      <div id="i2" class="space"></div>
+      <h4 id="2">Connecting</h4>
+    </div>
+    <div class="col-sm-3 text-center">
+      <h3>CAR SLOT - 3</h3>
+      <i class="fas fa-car-alt fa-5x"></i>        
+      <div id="i3" class="space"></div>
+      <h4 id="3">Connecting</h4>
+    </div>
+    <div class="col-sm-3 text-center">
+      <h3>CAR SLOT - 4</h3>
+      <i class="fas fa-car-alt fa-5x"></i>        
+      <div id="i4" class="space"></div>
+      <h4 id="4">Connecting</h4>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+
+	</div>
+
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<!-- Bootstrap JS -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/5.5.1/firebase.js"></script>
+	<script>
+	  // Initialize Firebase
+	  var config = {
+	    apiKey: "AIzaSyDhYuhyE2yPhYGa7Z3E9Y5wMp8erMVRCcw",
+	    authDomain: "carparkingdemo.firebaseapp.com",
+	    databaseURL: "https://carparkingdemo.firebaseio.com",
+	    projectId: "carparkingdemo",
+	    storageBucket: "carparkingdemo.appspot.com",
+	    messagingSenderId: "878078182329"
+	
+	  };
+
+	  
+	  firebase.initializeApp(config);
+	
+		var database = firebase.database();
+		var firebaseOrdersCollection = database.ref().child('carinfo');
+		
+		//create a 'listener' which waits for changes to the values inside the firebaseOrdersCollection 
+		firebaseOrdersCollection.on('value',function(orders){
+
+			console.log(orders.val());
+			var i = 0;
+			//this is saying foreach order do the following function...
+			orders.forEach(function(firebaseOrderReference){
+				i++;
+				//this gets the actual data (JSON) for the order.
+				var order = firebaseOrderReference.val();
+				var icon = "";
+				var result = "";
+
+				if(order == 1){
+					icon = "<i class='far fa-check-circle fa-2x'></i>"
+					result = "AVAILABLE <br/> READY TO USE."
+				} else {
+					icon = "<i class='far fa-times-circle fa-2x'></i>"
+					result = "BUSY <br/> PLEASE WAIL."
+				}
+				$("#i"+i).html(icon);
+				$("#"+i).html(result);
+				console.log(order); //check your console to see it!
+				
+			});
+			
+			//actaull put the html on the page inside the element with the id PreviousOrders
+		
+		});
+	</script>
+
+	<style type="text/css">
+		.space{
+    padding: 8px;
+}
+	</style>
+
+</body>
+
+</html>
